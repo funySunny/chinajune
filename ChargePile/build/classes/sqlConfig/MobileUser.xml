@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="MobileUser" type="com.ChargePoint.bean.MobileUser"/>
+		
+		<!-- 查询所有数据的方法 -->
+		<select id="selectMobileUserList" resultClass="MobileUser" parameterClass="MobileUser">
+			select * from mobile_user
+			<dynamic prepend="where">
+			<isNotNull prepend="and" property="user_name">
+				user_name = #user_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="true_name">
+				true_name = #true_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="password">
+               password=#password#  
+			</isNotNull>
+			<isNotNull prepend="and" property="gender">
+               gender = #gender# 
+			</isNotNull>
+			<isNotNull prepend="and" property="plate_no">
+               plate_no = #plate_no# 
+			</isNotNull>
+			<isNotNull prepend="and" property="car_type">
+               car_type = #car_type# 
+			</isNotNull>
+			<isNotNull prepend="and" property="car_frame_no">
+               car_frame_no = #car_frame_no# 
+			</isNotNull>
+			<isNotNull prepend="and" property="engine_no">
+               engine_no = #engine_no# 
+			</isNotNull>
+			<isNotNull prepend="and" property="interface_type">
+               interface_type = #interface_type# 
+			</isNotNull>
+			<isNotNull prepend="and" property="license">
+               license = #license# 
+			</isNotNull>
+			<isNotNull prepend="and" property="tel">
+               tel = #tel# 
+			</isNotNull>
+			<isNotNull prepend="and" property="reg_time">
+				reg_time = #reg_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="money">
+               money = #money# 
+			</isNotNull>
+			<isNotNull prepend="and" property="identity">
+               identity = #identity# 
+			</isNotNull>
+			<isNotNull prepend="and" property="head_portrait">
+               head_portrait = #head_portrait# 
+			</isNotNull>
+			</dynamic>
+		</select>
+		
+		<select id="selectMobileUser" resultClass="MobileUser" parameterClass="java.lang.String">
+			select * from mobile_user where user_name = #user_name#
+		</select>
+		
+		<select id="checkMobileUser" resultClass="MobileUser" parameterClass="MobileUser">
+			select * from mobile_user where user_name = #user_name# and password = #password#
+		</select>	
+		
+		<select id="selectMobileUserByPage" parameterClass="java.util.HashMap" resultClass="MobileUser">
+    	select * from mobile_user
+    	<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+  		
+		<insert id="insertMobileUser" parameterClass="MobileUser">
+			insert into mobile_user (user_name, password ,reg_time ,true_name ,gender ,plate_no,car_type,car_frame_no,engine_no,interface_type,license,tel,identity,money,head_portrait ) 
+ 			    values (#user_name#, #password#,#reg_time#, #true_name#,#gender#,#plate_no#,#car_type#,#car_frame_no#,#engine_no#,#interface_type#,#license#,#tel#,#identity#,#money#,#head_portrait#)  
+		<!--  注意：上述SQL语句中不插入主键id-->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey>
+		</insert>
+		
+		<delete id="deleteMobileUser" parameterClass="java.lang.String"> 
+			delete from mobile_user where user_name = #user_name#
+		</delete>
+		
+		<update id="updateMobileUser" parameterClass="MobileUser">
+			update mobile_user
+		<dynamic prepend="set">  
+			<isNotNull prepend="," property="true_name">
+				true_name = #true_name#
+			</isNotNull>
+			<isNotNull prepend="," property="password">
+               password=#password#  
+			</isNotNull>
+			<isNotNull prepend="," property="gender">
+               gender = #gender# 
+			</isNotNull>
+			<isNotNull prepend="," property="plate_no">
+               plate_no = #plate_no# 
+			</isNotNull>
+			<isNotNull prepend="," property="car_type">
+               car_type = #car_type# 
+			</isNotNull>
+			<isNotNull prepend="," property="car_frame_no">
+               car_frame_no = #car_frame_no# 
+			</isNotNull>
+			<isNotNull prepend="," property="engine_no">
+               engine_no = #engine_no# 
+			</isNotNull>
+			<isNotNull prepend="," property="interface_type">
+               interface_type = #interface_type# 
+			</isNotNull>
+			<isNotNull prepend="," property="license">
+               license = #license# 
+			</isNotNull>
+			<isNotNull prepend="," property="tel">
+               tel = #tel# 
+			</isNotNull>
+			<isNotNull prepend="," property="reg_time">
+				reg_time = #reg_time#
+			</isNotNull>
+			<isNotNull prepend="," property="money">
+               money = #money# 
+			</isNotNull>
+			<isNotNull prepend="," property="identity">
+               identity = #identity# 
+			</isNotNull>
+			<isNotNull prepend="," property="head_portrait">
+               head_portrait = #head_portrait# 
+			</isNotNull>
+           </dynamic>
+		 	where user_name = #user_name#
+		</update>
+		
+		<update id="changeMoney" parameterClass="java.util.Map">
+			update mobile_user set money = #money# where user_name = #userName#
+		</update>
+		
+	</sqlMap>

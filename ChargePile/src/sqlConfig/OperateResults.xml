@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="OperateResults" type="com.ChargePoint.bean.OperateResults"/>
+		<typeAlias alias="OperateResults2" type="com.ChargePoint.bean.OperateResults2"/>
+		<!-- 查询所有数据的方法 -->
+		<select id="selectOperateResults" resultClass="OperateResults" parameterClass="OperateResults2">
+			select * from 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operation_result">
+				operation_result = #operation_result#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="back_time">
+				back_time = #back_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="result_details">
+				result_details = #result_details#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="failure_case">
+				failure_case = #failure_case#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="is_send">
+				is_send = #is_send#
+			</isNotEmpty>
+			</dynamic>
+		</select>
+		
+		<!-- 分页查询所有数据的方法 -->
+		<select id="selectOperateResultsByPage" parameterClass="java.util.HashMap" resultClass="OperateResults">
+    		select * from $tableName$
+    	<isNotEmpty property="sortName">
+	    		order by $sortName$ $order$
+   		</isNotEmpty>
+    		<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+		
+		<insert id="insertOperateResults" parameterClass="OperateResults2">
+			insert into 
+				$table_name$ 
+        		(operation_result,c_p_id,user_id,back_time,result_details,failure_case,is_send) VALUES ( 
+				#operation_result#,#c_p_id#,#user_id#,#back_time#,#result_details#,#failure_case#,#is_send#) 
+			<!-- 注意：上述SQL语句中不插入主键id -->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey> 
+		</insert>
+		
+		<delete id="deleteOperateResults" parameterClass="OperateResults2">
+			delete from 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operation_result">
+				operation_result = #operation_result#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="back_time">
+				back_time = #back_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="result_details">
+				result_details = #result_details#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="failure_case">
+				failure_case = #failure_case#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="is_send">
+				is_send = #is_send#
+			</isNotEmpty>
+			</dynamic>
+		</delete>
+		
+		<update id="updateOperateResults" parameterClass="OperateResults2">
+			update 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="set">
+			<isNotEmpty prepend="," property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="operation_result">
+				operation_result = #operation_result#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="back_time">
+				back_time = #back_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="result_details">
+				result_details = #result_details#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="failure_case">
+				failure_case = #failure_case#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="is_send">
+				is_send = #is_send#
+			</isNotEmpty>
+			</dynamic>
+			<dynamic prepend="where">
+			<isNotNull property="id">
+			 	id = #id#
+			</isNotNull>
+			</dynamic>
+		</update>
+		
+	</sqlMap>

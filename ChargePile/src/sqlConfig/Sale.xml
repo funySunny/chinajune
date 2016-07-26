@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="Sale" type="com.ChargePoint.bean.Sale"/>
+		
+		<!-- 查询所有数据的方法 -->
+		<select id="selectSaleList" resultClass="Sale" parameterClass="Sale">
+			select * from sale
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="location">
+				location = #location#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="no">
+				no = #no#
+			</isNotEmpty>
+			</dynamic>
+		</select>
+		
+		<select id="selectSaleCount" resultClass="java.lang.Integer">
+			select count(*) from sale
+		</select>
+		
+		<select id="selectSaleByPage" parameterClass="java.util.HashMap" resultClass="Sale">
+    	select * from sale
+    	<dynamic prepend="where">
+    		<isNotEmpty prepend="" property="startTime">
+				<isNotEmpty prepend="and" property="endTime">
+					<!-- 使'《'识别为小于 -->
+					<![CDATA[
+					saled_time >= #startTime#
+					and saled_time <= #endTime#
+					]]>
+				</isNotEmpty>
+			</isNotEmpty>
+    	</dynamic>
+    	<isNotEmpty property="sortName">
+	    			order by $sortName$ $order$
+	    		</isNotEmpty>
+    	<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+  		
+  		<select id="selectSaleAddress" parameterClass="java.lang.String" resultClass="Sale">
+			select * from sale where
+   					location like CONCAT('%', #place#, '%') 
+   					order by place asc                 
+		</select>
+		
+		<!-- 自动缓存每条查询语句的列名映射,加一个属性(remapResults)配置让每次执行都重新映射列名。 -->
+		<select remapResults="true" id="selectSaleAddressByLevel" resultClass="java.lang.String" parameterClass="java.lang.Integer">
+			select distinct(substring_index(place,' ',#level#))
+					 from sale order by place asc		
+		</select>
+		
+		<select remapResults="true" id="selectSaleAddressByLevel2" parameterClass="java.lang.String" resultClass="java.lang.String">
+			select distinct(substring_index(place,' ',2)) from sale where 
+   					location like CONCAT('%', #place#, '%') 
+   					order by location asc              
+		</select>
+		
+		<insert id="insertSale" parameterClass="Sale">
+			insert into sale (c_p_id,place, location,company_name,saled_time,no) 
+ 			    values (#c_p_id#, #place#,#location#,#company_name#,#saled_time#,#no#)  
+		</insert>
+		
+		<delete id="deleteSale" parameterClass="java.lang.String"> 
+			delete from sale where c_p_id = #c_p_id#
+		</delete>
+		
+		<update id="updateSale" parameterClass="Sale">
+			update sale
+		<dynamic prepend="set">  
+			<isNotEmpty prepend="," property="place">
+               place=#place#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="location">
+               location=#location#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="company_name">
+               company_name=#company_name#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="saled_time">
+               saled_time=#saled_time#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="no">
+               no=#no#  
+			</isNotEmpty>
+           </dynamic>
+		 	where c_p_id = #c_p_id# 
+		</update>
+		
+	</sqlMap>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="ChargePointACLive" type="com.ChargePoint.bean.ChargePointACLive"/>
+		<typeAlias alias="ChargePointACLive2" type="com.ChargePoint.bean.ChargePointACLive2"/>
+		<!-- 查询所有数据的方法 -->
+		<select id="selectChargePointACLive" resultClass="ChargePointACLive" parameterClass="ChargePointACLive2">
+			select * from 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="time">
+				time = #time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="v_out">
+				v_out = #v_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="i_out">
+				i_out = #i_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="charged_time">
+				charged_time = #charged_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="allow_charge">
+				allow_charge = #allow_charge#
+			</isNotEmpty>
+			</dynamic>
+		</select>
+		
+		<!-- 分页查询所有数据的方法 -->
+		<select id="selectChargePointACLiveByPage" parameterClass="java.util.HashMap" resultClass="ChargePointACLive">
+    		select * from $table_name$
+    		<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+		
+		<select id="selectFirstChargePointACLive" parameterClass="java.lang.String" resultClass="ChargePointACLive">
+    		select * from $table_name$ l left join charge_point c on l.c_p_id = c.c_p_id order by id desc limit 1;
+  		</select>
+		
+		<insert id="insertChargePointACLive" parameterClass="ChargePointACLive2">
+			insert into 
+				$table_name$ 
+        		(time,c_p_id,v_out,i_out,charged_time,allow_charge) VALUES ( 
+				#time#,#c_p_id#,#v_out#,#i_out#,#charged_time#,#allow_charge#) 
+			<!-- 注意：上述SQL语句中不插入主键id -->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey> 
+		</insert>
+		
+		<delete id="deleteChargePointACLive" parameterClass="ChargePointACLive">
+			delete from 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="charged_time">
+				charged_time = #charged_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="allow_charge">
+				allow_charge = #allow_charge#
+			</isNotEmpty>
+			</dynamic>
+		</delete>
+		
+		<update id="updateChargePointACLive" parameterClass="ChargePointACLive">
+			update 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="set">
+			<isNotEmpty prepend="," property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotNull prepend="," property="charged_time">
+				charged_time = #charged_time#
+			</isNotNull>
+			<isNotNull prepend="," property="allow_charge">
+				allow_charge = #allow_charge#
+			</isNotNull>
+			</dynamic>
+			where id = #id#
+		</update>
+		
+	</sqlMap>

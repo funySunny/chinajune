@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="TempCharge" type="com.ChargePoint.bean.TempCharge"/>
+		<!-- 查询所有数据的方法 -->
+		<select id="selectTempCharge" resultClass="TempCharge" parameterClass="TempCharge">
+			select * from temp_charge
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			</dynamic>
+		</select>
+		
+		<!-- 分页查询所有数据的方法 -->
+		<select id="selectTempChargeByPage" parameterClass="java.util.HashMap" resultClass="TempCharge">
+    		select * from temp_charge
+    		<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+		
+		<insert id="insertTempCharge" parameterClass="TempCharge">
+			insert into temp_charge 
+        		(c_p_id,user_id,charger_no) VALUES ( 
+				#c_p_id#,#user_id#,#charger_no#) 
+			<!-- 注意：上述SQL语句中不插入主键id -->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey> 
+		</insert>
+		
+		<delete id="deleteTempCharge" parameterClass="TempCharge">
+			delete from temp_charge 
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="charger_no">
+				charger_no = #charger_no#
+			</isNotEmpty>
+			</dynamic>
+		</delete>
+		
+		<update id="updateTempCharge" parameterClass="TempCharge">
+			update temp_charge 
+			<dynamic prepend="set">
+			<isNotEmpty prepend="," property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="charger_no">
+				charger_no = #charger_no#
+			</isNotEmpty>
+			</dynamic>
+		</update>
+		
+	</sqlMap>

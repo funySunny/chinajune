@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="PCUser" type="com.ChargePoint.bean.PCUser"/>
+
+		<!-- 查询所有数据的方法 -->
+		<select id="selectPCUserList" resultClass="PCUser" parameterClass="PCUser">
+			select * from pc_user
+			<dynamic prepend="where">
+			<isNotNull prepend="and" property="user_name">
+				user_name = #user_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="password">
+               password=#password#  
+			</isNotNull>
+			<isNotNull prepend="and" property="reg_time">
+				reg_time = #reg_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="tel">
+               tel = #tel# 
+			</isNotNull>
+			<isNotEmpty prepend="and" property="email_code">
+               email_code=#email_code#  
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="email">
+               email=#email#  
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="access">
+               access=#access#  
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="employee_no">
+               employee_no=#employee_no#  
+			</isNotEmpty>
+			<isNotNull prepend="and" property="head_portrait">
+               head_portrait = #head_portrait# 
+			</isNotNull>
+			</dynamic>
+		</select>
+		
+		<select id="selectPCUser" resultClass="PCUser" parameterClass="java.lang.String">
+			select * from pc_user where user_name = #user_name#
+		</select>
+		
+		<select id="checkPCUserpw" resultClass="PCUser" parameterClass="PCUser">
+			select * from pc_user where user_name = #user_name# and password = #password#
+		</select>
+		
+		<!-- 自动缓存每条查询语句的列名映射,加一个属性(remapResults)配置让每次执行都重新映射列名。 -->
+		<select remapResults="true" id="selectPCUserByPage" parameterClass="java.util.HashMap" resultClass="PCUser">
+    	select * from pc_user
+    	<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+		
+		<insert id="insertPCUser" parameterClass="PCUser">
+			insert into pc_user (user_name, password ,email_code, email ,reg_time ,access,tel,reg_no,employee_no,question,answer) 
+ 			    values (#user_name#, #password#,#email_code#,#email#,#reg_time#,#access#,#tel#,#reg_no#,#employee_no#,#question#,#answer#)  
+		<!--  注意：上述SQL语句中不插入主键id-->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey>
+		</insert>
+		
+		<delete id="deletePCUser" parameterClass="java.lang.String"> 
+			delete from pc_user where user_name = #user_name#
+		</delete>
+		
+		<update id="updatePCUser" parameterClass="PCUser">
+			update pc_user
+		<dynamic prepend="set"> 
+			<isNotNull prepend="," property="password">
+               password=#password#  
+			</isNotNull>
+			<isNotNull prepend="," property="reg_time">
+				reg_time = #reg_time#
+			</isNotNull>
+			<isNotNull prepend="," property="tel">
+               tel = #tel# 
+			</isNotNull>
+			<isNotNull prepend="," property="email_code">
+               email_code=#email_code#  
+			</isNotNull>
+			<isNotEmpty prepend="," property="email">
+               email=#email#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="access">
+               access=#access#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="question">
+               question=#question#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="answer">
+               answer=#answer#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="employee_no">
+               employee_no=#employee_no#  
+			</isNotEmpty>
+           </dynamic>
+		 	where user_name = #user_name#
+		</update>
+		
+		<update id="resetPCUserPW" parameterClass="PCUser">
+			update pc_user set
+               password=#password#  
+            where user_name = #user_name#
+		</update>
+		
+	</sqlMap>

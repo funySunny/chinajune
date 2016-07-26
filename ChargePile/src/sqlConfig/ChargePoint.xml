@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="ChargePoint" type="com.ChargePoint.bean.ChargePoint"/>
+
+		<typeAlias alias="ChargePointHome" type="com.ChargePoint.bean.ChargePointHome"/>
+		
+		<!-- 查询所有数据的方法 -->
+		<select id="selectChargePointList" resultClass="ChargePoint" parameterClass="ChargePoint">
+			select * from charge_point
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="station_id">
+				station_id = #station_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="c_p_type">
+				c_p_type = #c_p_type#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="w">
+				w = #w#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="e_price">
+				e_price = #e_price#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="is_free">
+				is_free = #is_free#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="dtu_id">
+				dtu_id = #dtu_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="v_max_charge_out">
+				v_max_charge_out = #v_max_charge_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="v_min_charge_out">
+				v_min_charge_out = #v_min_charge_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="i_max_charge_out">
+				i_max_charge_out = #i_max_charge_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="i_min_charge_out">
+				i_min_charge_out = #i_min_charge_out#
+			</isNotEmpty>
+	
+			</dynamic>
+		</select>
+		
+		<select id="selectChargePoint" resultClass="ChargePoint" parameterClass="java.lang.String">
+			select * from charge_point where c_p_id = #c_p_id#
+		</select>
+		
+		<select id="selectChargePointListByUserName" parameterClass="java.lang.String" resultClass="ChargePoint">
+    	select * from pc_user a 
+    	left join company b on a.reg_no = b.reg_no
+    	left join charge_point c on b.id = c.company_id
+    	where a.user_name = #user_name#
+  		</select>
+		
+		<!-- 分页查询所有数据的方法 -->
+		<select id="selectChargePointByPage" parameterClass="java.util.HashMap" resultClass="ChargePoint">
+    	select * from charge_point 
+    		<dynamic prepend="where">
+				<isNotEmpty prepend="and" property="c_p_id">
+					c_p_id = #c_p_id#
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="c_p_type">
+					c_p_type = #c_p_type#
+				</isNotEmpty>
+    		</dynamic>
+    			<isNotEmpty property="sortName">
+	    			order by $sortName$ $order$
+	    		</isNotEmpty>
+    		<isParameterPresent>
+      			<isNotNull property="limitStart">
+        			limit $limitStart$, $limitCount$
+      			</isNotNull>
+    		</isParameterPresent>
+  		</select>
+  		
+  		<select id="selectHomeCPTable" resultClass="ChargePointHome" parameterClass="java.util.HashMap">
+			SELECT * from charge_point
+			<dynamic prepend="where">
+				<isNotEmpty  prepend="and" property="c_p_id">
+					c.c_p_id = #c_p_id#
+				</isNotEmpty>
+				<isNotEmpty  prepend="and" property="is_free">
+					is_free = #is_free#
+				</isNotEmpty>
+    		</dynamic>
+    			<isNotEmpty property="sortName">
+	    			order by $sortName$ $order$
+	    		</isNotEmpty>
+    		<isParameterPresent>
+      			<isNotNull property="limitStart">
+        			limit $limitStart$, $limitCount$
+      			</isNotNull>
+    		</isParameterPresent>
+		</select>
+		
+		<insert id="insertChargePoint" parameterClass="ChargePoint">
+			insert into charge_point(c_p_id ,station_id,c_p_type,w,e_price,is_free,
+			dtu_id,v_max_charge_out,v_min_charge_out,i_max_charge_out,i_min_charge_out,
+			total_degree,time_count,available_count,company_id,inner_no) values(
+			#c_p_id#,#station_id#,#c_p_type#,#w#,#e_price#,#is_free#,#dtu_id#,#v_max_charge_out#,
+			#v_min_charge_out#,#i_max_charge_out#,#i_min_charge_out#,
+			#total_degree#,#time_count#,#available_count#,#company_id#,#inner_no#)
+		</insert>
+		
+		<delete id="deleteChargePoint" parameterClass="ChargePoint">
+			delete from charge_point 
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="station_id">
+				station_id = #station_id#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="c_p_type">
+				c_p_type = #c_p_type#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="w">
+				w = #w#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="e_price">
+				e_price = #e_price#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="is_free">
+				is_free = #is_free#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="dtu_id">
+				dtu_id = #dtu_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="v_max_charge_out">
+				v_max_charge_out = #v_max_charge_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="v_min_charge_out">
+				v_min_charge_out = #v_min_charge_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="i_max_charge_out">
+				i_max_charge_out = #i_max_charge_out#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="i_min_charge_out">
+				i_min_charge_out = #i_min_charge_out#
+			</isNotEmpty>
+			
+			</dynamic>
+		</delete>
+		
+		<update id="updateChargePoint" parameterClass="ChargePoint">
+			update charge_point 
+			<dynamic prepend="set">
+			<isNotNull prepend="," property="w">
+				w = #w#
+			</isNotNull>
+			<isNotNull prepend="," property="station_id">
+				station_id = #station_id#
+			</isNotNull>
+			<isNotNull prepend="," property="e_price">
+				e_price = #e_price#
+			</isNotNull>
+			<isNotNull prepend="," property="is_free">
+				is_free = #is_free#
+			</isNotNull>
+			<isNotNull prepend="," property="dtu_id">
+				dtu_id = #dtu_id#
+			</isNotNull>
+			<isNotNull prepend="," property="v_max_charge_out">
+				v_max_charge_out = #v_max_charge_out#
+			</isNotNull>
+			<isNotNull prepend="," property="v_min_charge_out">
+				v_min_charge_out = #v_min_charge_out#
+			</isNotNull>
+			<isNotNull prepend="," property="i_max_charge_out">
+				i_max_charge_out = #i_max_charge_out#
+			</isNotNull>
+			<isNotNull prepend="," property="i_min_charge_out">
+				i_min_charge_out = #i_min_charge_out#
+			</isNotNull>
+			</dynamic>
+			where c_p_id = #c_p_id#
+		</update>
+		
+	</sqlMap>

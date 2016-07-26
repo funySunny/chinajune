@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+ul.nav-tabs li:nth-child(1){padding-left:200;}
+ul.nav-tabs li a{width:400;}
+.breadcrumb_active{color:#0C73B3;font-size: 17px;font-weight: bold;}
+.pager{padding-top:30;}
+.panel-footer a{font-size: large;font-weight: bold;font-family: SimHei;}
+.panel-body b{font-family: SimHei;}

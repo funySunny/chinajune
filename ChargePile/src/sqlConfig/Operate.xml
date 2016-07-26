@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="Operate" type="com.ChargePoint.bean.Operate"/>
+		<typeAlias alias="Operate2" type="com.ChargePoint.bean.Operate2"/>
+		<!-- 查询所有数据的方法 -->
+		<select id="selectOperate" resultClass="Operate" parameterClass="Operate2">
+			select * from 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operate_time">
+				operate_time = #operate_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operate_type">
+				operate_type = #operate_type#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="charger_no">
+				charger_no = #charger_no#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="charge_method">
+				charge_method = #charge_method#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="for_energy">
+				for_energy = #for_energy#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="for_time">
+				for_time = #for_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="order_start_time">
+				order_start_time = #order_start_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="order_end_time">
+				order_end_time = #order_end_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="is_send">
+				is_send = #is_send#
+			</isNotEmpty>
+			</dynamic>
+		</select>
+		
+		<!-- 分页查询所有数据的方法 -->
+		<select id="selectOperateByPage" parameterClass="java.util.HashMap" resultClass="Operate">
+    		select * from $tableName$ 
+    	<isNotEmpty property="sortName">
+	    		order by $sortName$ $order$
+   		</isNotEmpty>
+    	<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+		
+		<insert id="insertOperate" parameterClass="Operate2">
+			insert into 
+				$table_name$ 
+        		(operate_time,c_p_id,user_id,operate_type,charger_no,charge_method,for_energy,for_time,
+			 	order_start_time,order_end_time,is_send) VALUES ( 
+				#operate_time#,#c_p_id#,#user_id#,#operate_type#,#charger_no#,#charge_method#,#for_energy#,#for_time#,
+				#order_start_time#,#order_end_time#,#is_send#) 
+			<!-- 注意：上述SQL语句中不插入主键id -->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey> 
+		</insert>
+		
+		<delete id="deleteOperate" parameterClass="Operate2">
+			delete from 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operate_time">
+				operate_time = #operate_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operate_type">
+				operate_type = #operate_type#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="charger_no">
+				charger_no = #charger_no#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="charge_method">
+				charge_method = #charge_method#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="for_energy">
+				for_energy = #for_energy#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="for_time">
+				for_time = #for_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="order_start_time">
+				order_start_time = #order_start_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="order_end_time">
+				order_end_time = #order_end_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="is_send">
+				is_send = #is_send#
+			</isNotEmpty>
+			</dynamic>
+		</delete>
+		
+		<update id="updateOperate" parameterClass="Operate2">
+			update 
+			<isNotEmpty property="table_name">
+				$table_name$ 
+			</isNotEmpty>
+			<dynamic prepend="set">
+			<isNotEmpty prepend="," property="operate_time">
+				operate_time = #operate_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="operate_type">
+				operate_type = #operate_type#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="charger_no">
+				charger_no = #charger_no#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="charge_method">
+				charge_method = #charge_method#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="for_energy">
+				for_energy = #for_energy#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="for_time">
+				for_time = #for_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="order_start_time">
+				order_start_time = #order_start_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="order_end_time">
+				order_end_time = #order_end_time#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="c_p_id">
+				c_p_id = #c_p_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="user_id">
+				user_id = #user_id#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="is_send">
+				is_send = #is_send#
+			</isNotEmpty>
+			</dynamic>
+			<dynamic prepend="where">
+			<isNotNull property="id">
+			 	id = #id#
+			</isNotNull>
+			</dynamic>
+		</update>
+		
+	</sqlMap>

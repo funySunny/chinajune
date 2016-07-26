@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+<!-- 自动扫描 -->
+<context:component-scan base-package="/"></context:component-scan>
+
+<!-- 引入配置文件 jdbc.properties-->
+<bean id="propertyConfigurer"
+ 	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="location" value="classpath:jdbc.properties" />
+</bean>
+
+<!-- spring和iBatis完美整合，不需要ibatis的配置映射文件sqlmapconfig -->
+<!-- 加载jdbc.properties文件 -->
+<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">         
+
+ <property name="driverClassName" value="${driver}"/>        
+
+  <property name="url" value="${url}"/>         
+
+ <property name="username" value="${username}"/>         
+
+ <property name="password" value="${password}"/>  
+ 
+ <property name="maxActive" value="${maxActive}"></property>
+ 
+ <property name="maxWait" value="${maxWait}"></property>
+        
+ <property name="defaultAutoCommit" value="${defaultAutoCommit}"></property>        
+
+ </bean>        
+
+ 	<!-- Transaction manager for a single JDBC DataSource -->
+  <bean id="transactionManager"
+  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
+	<!-- Spring提供的iBatis的SqlMap配置-->
+  <bean id="sqlMapClient"
+class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+    <property name="configLocation">
+     <value>classpath:ibatis-configuration.xml</value>
+    </property>
+    <property name="dataSource">
+    <ref bean="dataSource"/>
+    </property> 
+  </bean>
+  
+  <!-- 继承SqlMapClientDaoSupport，要求注入SqlMapClient对象 -->
+   <bean id="ChargeRecordsDAOImpl" class="com.ChargePoint.DAO.ChargeRecordsDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean> 
+  
+  <bean id="ChargeMoneyRecordsDAOImpl" class="com.ChargePoint.DAO.ChargeMoneyRecordsDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean> 
+
+	<bean id="ChargePointDAOImpl" class="com.ChargePoint.DAO.ChargePointDAOImpl">
+     	<property name="dataSource">
+   			<ref bean="dataSource"/>
+	 	</property>
+     	<property name="sqlMapClient"> 
+     		<ref bean="sqlMapClient"/>
+     	</property>
+  	</bean> 
+  	
+  	<bean id="ChargePointLiveDAOImpl" class="com.ChargePoint.DAO.ChargePointLiveDAOImpl">
+     	<property name="dataSource">
+   			<ref bean="dataSource"/>
+	 	</property>
+     	<property name="sqlMapClient"> 
+     		<ref bean="sqlMapClient"/>
+     	</property>
+  	</bean> 
+  	
+  	 <bean id="ChargePointACLiveDAOImpl" class="com.ChargePoint.DAO.ChargePointLiveDAOImpl">
+     	<property name="dataSource">
+   			<ref bean="dataSource"/>
+	 	</property>
+     	<property name="sqlMapClient"> 
+     		<ref bean="sqlMapClient"/>
+     	</property>
+  	</bean> 
+  	
+ 	<bean id="PCUserDAOImpl" class="com.ChargePoint.DAO.PCUserDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  	</bean> 
+  	
+  	<bean id="MobileUserDAOImpl" class="com.ChargePoint.DAO.MobileUserDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  	</bean> 
+  	
+  	<bean id="CommonDAOImpl" class="com.ChargePoint.DAO.CommonDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  	</bean> 
+  	
+  	<bean id="SaleDAOImpl" class="com.ChargePoint.DAO.SaleDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+  <bean id="DataExchangeDAOImpl" class="com.ChargePoint.DAO.DataExchangeDAOImpl">
+     	<property name="dataSource">
+   			<ref bean="dataSource"/>
+	 	</property>
+     	<property name="sqlMapClient"> 
+     		<ref bean="sqlMapClient"/>
+     	</property>
+  	</bean>
+  
+  <bean id="CompanyDAOImpl" class="com.ChargePoint.DAO.CompanyDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+   <bean id="OperateDAOImpl" class="com.ChargePoint.DAO.OperateDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+  <bean id="OperateResultsDAOImpl" class="com.ChargePoint.DAO.OperateResultsDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+ <bean id="TradeRecordsDAOImpl" class="com.ChargePoint.DAO.TradeRecordsDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+ <bean id="FeedbacksDAOImpl" class="com.ChargePoint.DAO.FeedbacksDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+  <bean id="VersionsDAOImpl" class="com.ChargePoint.DAO.VersionsDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+
+  <bean id="ChargePointStationDAOImpl" class="com.ChargePoint.DAO.ChargePointStationDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+  <bean id="TempAppointmentDAOImpl" class="com.ChargePoint.DAO.TempAppointmentDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+    <bean id="TempChargeDAOImpl" class="com.ChargePoint.DAO.TempChargeDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+    <bean id="ReviewDAOImpl" class="com.ChargePoint.DAO.ReviewDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+    <bean id="WriteBackDAOImpl" class="com.ChargePoint.DAO.WriteBackDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+    <bean id="AddHeartDAOImpl" class="com.ChargePoint.DAO.AddHeartDAOImpl">
+     <property name="dataSource">
+   		<ref bean="dataSource"/>
+	 </property>
+     <property name="sqlMapClient"> 
+     	<ref bean="sqlMapClient"/>
+     </property>
+  </bean>
+  
+</beans>

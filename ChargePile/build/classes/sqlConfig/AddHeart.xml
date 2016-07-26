@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="AddHeart" type="com.ChargePoint.bean.AddHeart"/>
+		<!-- 查询所有数据的方法 -->
+		<select id="selectAddHeartList" resultClass="AddHeart" parameterClass="AddHeart">
+			select * from add_heart
+			<dynamic prepend="where">
+			<isNotNull prepend="and" property="station_id">
+				station_id = #station_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="review_user_name">
+               review_user_name=#review_user_name#  
+			</isNotNull>
+			<isNotNull prepend="and" property="add_heart_user_name">
+				add_heart_user_name = #add_heart_user_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="review_id">
+               review_id = #review_id# 
+			</isNotNull>
+			</dynamic>
+		</select>
+		
+		<select id="selectAddHeartCountByReview" resultClass="int" parameterClass="java.util.HashMap">
+			select count(*) from add_heart where station_id = #station_id# and review_id = #review_id#
+		</select>
+		
+		<!-- 自动缓存每条查询语句的列名映射,加一个属性(remapResults)配置让每次执行都重新映射列名。 -->
+		<select remapResults="true" id="selectAddHeartByPage" parameterClass="java.util.HashMap" resultClass="AddHeart">
+    	select * from add_heart
+    	<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+		
+		<insert id="insertAddHeart" parameterClass="AddHeart">
+			insert into add_heart (station_id, review_user_name ,add_heart_user_name ,review_id) 
+ 			    values (#station_id#, #review_user_name#,#add_heart_user_name#,#review_id#)  
+		<!--  注意：上述SQL语句中不插入主键id-->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey>
+		</insert>
+		
+		<delete id="deleteAddHeart" parameterClass="AddHeart"> 
+			delete from add_heart
+			<dynamic prepend="where">
+			<isNotNull prepend="and" property="station_id">
+				station_id = #station_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="review_user_name">
+               review_user_name=#review_user_name#  
+			</isNotNull>
+			<isNotNull prepend="and" property="add_heart_user_name">
+				add_heart_user_name = #add_heart_user_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="review_id">
+               review_id = #review_id# 
+			</isNotNull>
+			</dynamic>
+		</delete>
+		
+		<update id="updateAddHeart" parameterClass="AddHeart">
+			update add_heart
+		<dynamic prepend="set"> 
+			<isNotNull prepend="," property="station_id">
+				station_id = #station_id#
+			</isNotNull>
+			<isNotNull prepend="," property="review_user_name">
+               review_user_name=#review_user_name#  
+			</isNotNull>
+			<isNotNull prepend="," property="add_heart_user_name">
+				add_heart_user_name = #add_heart_user_name#
+			</isNotNull>
+			<isNotNull prepend="," property="review_id">
+               review_id = #review_id# 
+			</isNotNull>
+          </dynamic>
+		 	where id = #id#
+		</update>
+		
+	</sqlMap>

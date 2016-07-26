@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>ChargePoint</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+  <listener>
+    <listener-class>com.ChargePoint.listener.TempAppointmentListener</listener-class>
+  </listener>
+  
+  <!--添加 spring 配置 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- spring-ibatis 整合配置文件 -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:spring-ibatis-config.xml</param-value>
+  </context-param>
+  
+  <!-- 配置 spring总分发器和加载springMVC配置文件 -->
+  <servlet>
+    <servlet-name>ChargePoint</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/spring-MVC-configuration.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <!-- 配置拦截规则 -->
+  <!-- url配置为/，不带文件后缀，会造成其它静态文件(js，css等)不能访问。如配为*.do，则不影响静态文件的访问 --> 
+  <servlet-mapping>
+    <servlet-name>ChargePoint</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 像js,css,gif等静态文件，需要配置为默认的servlet -->
+   <servlet-mapping>  
+     <servlet-name>default</servlet-name>  
+     <url-pattern>*.js</url-pattern>  
+ </servlet-mapping> 
+   <servlet-mapping>  
+     <servlet-name>default</servlet-name>  
+     <url-pattern>*.css</url-pattern>  
+ </servlet-mapping> 
+  <servlet-mapping>  
+     <servlet-name>default</servlet-name>  
+     <url-pattern>*.png</url-pattern>  
+ </servlet-mapping> 
+   <servlet-mapping>  
+     <servlet-name>default</servlet-name>  
+     <url-pattern>*.jpg</url-pattern>  
+ </servlet-mapping> 
+ 
+
+	<!-- 注册html否则MVC不能定义跳转HTML -->
+ <!-- <servlet-mapping>
+ 	<servlet-name>jsp</servlet-name>
+ 	<url-pattern>*.html</url-pattern>
+ </servlet-mapping> -->
+ 
+ <!-- 调用spring自带编码转化 -->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <async-supported>true</async-supported>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  
+<!--  <error-page>
+     <error-code>404</error-code>
+     <location>/ErrorPage/404Exception.jsp</location>
+ </error-page>
+ 
+ <error-page>
+     <exception-type>java.lang.Exception</exception-type>
+     <location>/ErrorPage/myException.jsp</location>
+ </error-page> -->
+  
+</web-app>

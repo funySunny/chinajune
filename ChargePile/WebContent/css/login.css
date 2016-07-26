@@ -1,0 +1,76 @@
+@charset "utf-8";
+/*全局样式*/
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{padding: 0;margin: 0;}
+/*html5*/
+article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}
+html,body{position:relative;font-size: 14px;font-weight: normal;color: #666;font-family:'Microsoft YaHei', '微软雅黑', helvetica, arial, sans-serif;}
+a,a:visited,a:hover,a:link{text-decoration: none; color: #666;} 
+ul li,ol li{list-style: none;}{list-style: none;}
+img{border: 0;}
+em{font-style: normal;}
+/*用户登录*/
+.m-login-bg{background: url(../img/login_bg.png) no-repeat; background-position: 12px 36%;}
+.m-login .login{float: right; margin: 16% 0; border-color: #d3e6f6; border-radius: 8px; overflow: hidden;}
+.m-login .title{ height: 58px; line-height: 58px; padding-right:10px; background-color: #2fa1fd; color: #fff; font-size: 20px;}
+.m-login .form-horizontal{margin-top: 42px;}
+.m-login .form-group{margin: 0 20px 15px;}
+.m-login .form-group .form-control{height: 42px;line-height: 42px;padding: 0 12px; border-radius: 4px;}
+.m-login .form-group label{padding-top: 14px;}
+.m-login .form-group label .icon{border: 0; color: #efad37;}
+.m-login .form-group .col-md-10{padding: 0;}
+.m-login .form-group .checkbox{padding: 7px;}
+.m-login .jzpwd .btn{margin-top: 12px;font-size: 18px;}
+.m-login .panel-footer{width: 100%; margin-top: 30px; text-align: center;background-color: #ecf4fa;}
+.m-login .panel-footer .btn{color:#6e9bd2;}
+
+.m-login .nav-tle{height: 58px; line-height: 58px; text-align: center; color: #FFF; background-color: #2fa1fd;}
+.m-login .nav-tle h2{line-height: 58px; font-size: 24px;}
+.m-login .nav-tle .back{float: left;margin-left: 18px; font-size: 16px; color: #FFF;}
+.m-login .nav-tle .back .icon{position: relative;top: 2px; right: 3px; -webkit-transform: rotateY(180deg); -o-transform: rotateY(180deg); transform: rotateY(180deg); }
+
+/*用户注册*/
+.m-register{padding-top: 10%;}
+.m-register .form-horizontal{width: 800px; margin: 0 auto; overflow: hidden;}
+.m-register .form-horizontal .form-group{margin-bottom: 25px;}
+.m-register .form-group .form-control+i{line-height: 42px;}
+.m-register .form-group .col-md-8{padding: 0;}
+.m-register .pager .step{width: 130px;margin:30px 25% 0;}
+.m-register .form-group .sbt{margin:25px 25%;}
+.m-register .pager .btn{background-color: #3e8f3e;border-color: #3e8f3e;color: #FFF;}
+.m-register .pager .btn:hover{background-color: #185f18;border-color: #237ac0;}
+.m-register .pager .disabled .btn{background-color: #FFF; border-color: #237ac0;color: #237ac0;}
+.m-register .form-group textarea.form-control{overflow-y: hidden;}
+.m-register .btn{width: 112px; margin-right: 15px;}
+
+/* 密码找回 */
+.m-forgetpw{width: 1000px; margin: 0 auto; padding-top: 60px; overflow: hidden;}
+.m-forgetpw .nav-pills{margin: 0 auto 6%;}
+.m-forgetpw .nav-pills li{margin-left: 8px; line-height: 26px; color: #333; font-size: 17px;}
+.m-forgetpw .nav-pills li.act{color: #237ac0; font-size: 18px;}
+.m-forgetpw .form-group{position: relative;width:420px;margin:0 0 30px 20%; padding: 0 20px;}
+.m-forgetpw .form-group .input-group+i{line-height: 42px; right:-15px;}
+.m-forgetpw .form-group .form-control{border-color: #f9b232;}
+.m-forgetpw .form-group .form-control:focus{-webkit-box-shadow: 0 0 3px #f9b232; -o-box-shadow: 0 0 3px #f9b232; box-shadow: 0 0 3px #f9b232;}
+.m-forgetpw .nobd .form-control{border-top-left-radius: 0; border-bottom-left-radius:0;}
+.m-forgetpw .form-group .input-group-addon{padding: 0 12px; border-color: #f9b232; background-color: #f9b232; color:#FFF;}
+.m-forgetpw .form-group span.vrf{background-color: transparent;}
+
+.m-forgetpw .email .icon{position: absolute; width: 52px; height: 42px; line-height: 42px; background: url(../img/login_emic.png) no-repeat; background-size: 30px; background-position: 15px 11px;}
+.m-forgetpw .email .vrf .icon{background-position-y:-35px; background-size: 26px; }
+.m-forgetpw .email .form-control{padding-left: 56px;}
+.m-forgetpw .email .vrf .btn{position: absolute; top:0; right: 20px; width: 130px; height:42px;line-height:42px; border-bottom-right-radius: 4px; border-top-right-radius: 4px; }
+.m-forgetpw .success .tle{color: #333;}
+.m-forgetpw .success .time{position: relative; left: 30%; bottom: 20px; color: #999;}
+.m-forgetpw .success .btn{width: 182px; height: 42px; line-height: 42px; margin: 5% 20%; border-color: #237ac0; color: #FFF;font-size: 18px; background-color: #237ac0;}
+.m-forgetpw .success .btn:hover{background-color: #17588c; border-color: #17588c;}
+
+.m-forgetpw .pager{width: 800px;padding-top:15px;}
+.m-forgetpw .pager .btn{width: 145px; height: 34px; line-height: 34px; margin-right: 15px; border-radius: 4px; border-color:#2fa1fd;color: #2fa1fd;}
+.m-forgetpw .pager .btn:hover{background-color: #2fa1fd;color: #fff;}
+.m-forgetpw .pager .disabled .btn{border-color: #237ac0;color: #237ac0; background-color: #FFF;}
+
+.m-login .form-group .note{float: left; color: #ff1448; font-size: 14px;}
+.m-footer{width: 100%;margin: 30px auto 10px;}
+.m-footer .copyright{width: 100%; text-align: center;}
+
+.m-login .btn{height: 36px; line-height: 36px; padding: 0 12px; -webkit-transition: all 0.3s ease-out; -o-transition: all 0.3s ease-out; transition: all 0.3s ease-out;}

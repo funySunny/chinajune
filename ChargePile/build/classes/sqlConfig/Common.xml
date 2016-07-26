@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="User" type="com.ChargePoint.bean.User"/>
+		<typeAlias alias="ChargePointHome" type="com.ChargePoint.bean.ChargePointHome"/>
+		
+		<!-- 查询数据量的方法 -->
+		<select id="selectCount" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+			select count(*) from $tableName$
+		</select>
+		
+		<select id="selectCPCount" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+			select count(*) from charge_point where c_p_type = #type#
+		</select>
+		
+		<select id="selectMaxData" parameterClass="java.util.HashMap" resultClass="java.lang.String">
+			select max($column$) from $tableName$
+		</select>
+		
+		<statement id="dynamicSql" parameterClass="java.lang.String">
+				$sql$
+		</statement>
+		
+		<select id="selectTableNames" resultClass="java.lang.String" parameterClass="java.lang.String">
+			SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where table_name like '$tableName$%';
+		</select>
+		
+		<statement id="createChargePointTable" parameterClass="java.lang.String">
+CREATE TABLE  IF NOT EXISTS $tableName$(
+  c_p_id varchar(20) NOT NULL,
+  c_p_type enum('1','0') NOT NULL DEFAULT '0',
+  w varchar(20) DEFAULT NULL,
+  e_price varchar(20) DEFAULT NULL,
+  is_free enum('1','0') DEFAULT NULL,
+  dtu_id varchar(40) DEFAULT NULL,
+  v_max_charge_out varchar(20) DEFAULT NULL,
+  v_min_charge_out varchar(20) DEFAULT NULL,
+  i_max_charge_out varchar(20) DEFAULT NULL,
+  i_min_charge_out varchar(20) DEFAULT NULL,
+  PRIMARY KEY (c_p_id),
+  FOREIGN KEY (c_p_id) REFERENCES sale (c_p_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+		</statement>
+	
+	<statement id="createChargePointLiveTable" parameterClass="java.lang.String">	
+		CREATE TABLE IF NOT EXISTS $tableName$ (
+  id int(255) NOT NULL AUTO_INCREMENT,
+  time datetime DEFAULT NULL,
+  c_p_id varchar(30) NOT NULL,
+  v_require varchar(20) DEFAULT NULL,
+  i_require varchar(20) DEFAULT NULL,
+  mode_charge varchar(20) DEFAULT NULL,
+  v_charge varchar(20) DEFAULT NULL,
+  i_charge varchar(20) DEFAULT NULL,
+  v_max varchar(20) DEFAULT NULL,
+  soc_now varchar(20) DEFAULT NULL,
+  time_left varchar(20) DEFAULT NULL,
+  v_out varchar(20) DEFAULT NULL,
+  i_out varchar(20) DEFAULT NULL,
+  charged_time varchar(20) DEFAULT NULL,
+  charge_allow varchar(20) DEFAULT NULL,
+  v_max_no varchar(20) DEFAULT NULL,
+  t_max varchar(20) DEFAULT NULL,
+  t_max_no varchar(20) DEFAULT NULL,
+  t_min varchar(20) DEFAULT NULL,
+  t_min_no varchar(20) DEFAULT NULL,
+  s_v_cell varchar(20) DEFAULT NULL,
+  s_soc varchar(20) DEFAULT NULL,
+  o_i_charge varchar(20) DEFAULT NULL,
+  o_t varchar(20) DEFAULT NULL,
+  orins varchar(20) DEFAULT NULL,
+  s_contact varchar(20) DEFAULT NULL,
+  allow_charge varchar(20) DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY charge_point_live_ibfk_1 (c_p_id),
+  FOREIGN KEY (c_p_id) REFERENCES charge_point (c_p_id) ON DELETE CASCADE ON UPDATE CASCADE
+	)ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+		</statement>
+		
+		<statement id="createChargePointACLiveTable" parameterClass="java.lang.String">
+		CREATE TABLE IF NOT EXISTS $tableName$ (
+  id int(255) NOT NULL AUTO_INCREMENT,
+  time datetime DEFAULT NULL,
+  c_p_id varchar(30) NOT NULL,
+  v_out varchar(20) DEFAULT NULL,
+  i_out varchar(20) DEFAULT NULL,
+  charged_time varchar(20) DEFAULT NULL,
+  allow_charge varchar(20) DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY charge_point_live_ac_ibfk_1 (c_p_id),
+  FOREIGN KEY (c_p_id) REFERENCES charge_point (c_p_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+</statement>
+		
+		<statement id="createChargeRecord" parameterClass="java.lang.String">
+		CREATE TABLE $tableName$ (
+    id int(255) NOT NULL AUTO_INCREMENT,
+  	user_name varchar(30) NOT NULL,
+  	c_p_id varchar(30) NOT NULL,
+  	start_time timestamp NULL DEFAULT NULL,
+  	end_time timestamp NULL DEFAULT NULL,
+  	time_count varchar(10) DEFAULT NULL,
+  	degree float(50,2) DEFAULT NULL,
+  	money float(50,2) DEFAULT NULL,
+  	total_degree float(50,2) DEFAULT NULL,
+  	total_count int(11) DEFAULT NULL,
+  	place varchar(255) NOT NULL DEFAULT '',
+  	trade_no varchar(55) DEFAULT NULL,
+  	trade_status varchar(10) DEFAULT NULL,
+  	PRIMARY KEY (id),
+  	KEY c_p_id (c_p_id),
+  	KEY user_name (user_name),
+    FOREIGN KEY (c_p_id) REFERENCES charge_point (c_p_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  	FOREIGN KEY (user_name) REFERENCES mobile_user (user_name) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+		</statement>
+		
+		<statement id="createChargeMoneyRecord" parameterClass="java.lang.String">
+		CREATE TABLE $tableName$ (
+  	id int(255) NOT NULL AUTO_INCREMENT,
+  	user_name varchar(30) DEFAULT NULL,
+  	time datetime DEFAULT NULL,
+  	left_money varchar(255) DEFAULT NULL,
+  	pass float(30,2) DEFAULT NULL,
+  	total_pass float(30,2) DEFAULT NULL,
+  	type varchar(255) DEFAULT NULL,
+  	place varchar(255) DEFAULT NULL,
+  	card_id varchar(30) DEFAULT NULL,
+  	trade_no varchar(55) DEFAULT NULL,
+  	total_count int(12) DEFAULT 0, 
+  	PRIMARY KEY (id),
+  	KEY user_name (user_name),
+  	FOREIGN KEY (user_name) REFERENCES mobile_user (user_name) ON DELETE CASCADE ON UPDATE CASCADE
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8
+		</statement>
+		
+		<statement id="createTradeRecord" parameterClass="java.lang.String">
+		CREATE TABLE $tableName$ (
+  	id int(255) NOT NULL AUTO_INCREMENT,
+  	trade_no varchar(255) NOT NULL,
+  	trade_status varchar(255) DEFAULT NULL,
+  	user_name varchar(30) DEFAULT NULL,
+  	body varchar(255) DEFAULT NULL,
+  	time datetime DEFAULT NULL,
+  	money varchar(255) DEFAULT NULL,
+  	type varchar(15) DEFAULT NULL,
+  	PRIMARY KEY (id),
+  	KEY user_name (user_name),
+  	FOREIGN KEY (user_name) REFERENCES mobile_user (user_name) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+		</statement>
+		
+		<statement id="createOperation" parameterClass="java.lang.String">
+		CREATE TABLE $tableName$ (
+  id int(255) NOT NULL AUTO_INCREMENT,
+  c_p_id varchar(30) DEFAULT NULL,
+  user_id int(11) DEFAULT NULL,
+  operate_time datetime DEFAULT NULL,
+  operate_type enum('2','1') DEFAULT NULL,
+  charger_no int(1) DEFAULT NULL,
+  charge_method enum('3','2','1','0') DEFAULT NULL,
+  for_energy varchar(20) DEFAULT NULL,
+  for_time varchar(20) DEFAULT NULL,
+  order_start_time datetime DEFAULT NULL,
+  order_end_time datetime DEFAULT NULL,
+  is_send enum('N','Y') DEFAULT 'Y',
+  PRIMARY KEY (id),
+  KEY user_id (user_id),
+  KEY c_p_id (c_p_id),
+  FOREIGN KEY (user_id) REFERENCES mobile_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (c_p_id) REFERENCES charge_point (c_p_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+		</statement>
+		
+		<statement id="createOperationResults" parameterClass="java.lang.String">
+		CREATE TABLE $tableName$ (
+  	  id int(255) NOT NULL AUTO_INCREMENT,
+  c_p_id varchar(30) DEFAULT NULL,
+  user_id int(255) DEFAULT NULL,
+  operation_result enum('1','0') DEFAULT NULL,
+  back_time datetime DEFAULT NULL,
+  result_details enum('4','3','2','1','0') DEFAULT NULL,
+  failure_case enum('5','4','3','2','1','0') DEFAULT NULL,
+  is_send enum('Y','N') DEFAULT 'N',
+  PRIMARY KEY (id),
+  KEY user_id (user_id),
+  KEY c_p_id (c_p_id),
+  FOREIGN KEY (user_id) REFERENCES mobile_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (c_p_id) REFERENCES charge_point (c_p_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+		</statement>
+		
+	</sqlMap>	

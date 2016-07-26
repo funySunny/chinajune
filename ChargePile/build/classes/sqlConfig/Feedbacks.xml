@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="Feedbacks" type="com.ChargePoint.bean.Feedbacks"/>
+		
+		<!-- 查询所有数据的方法 -->
+		<select id="selectFeedbacksList" resultClass="Feedbacks" parameterClass="Feedbacks">
+			select * from feedback
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="user_name">
+				user_name = #user_name#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="content">
+				content = #content#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="version">
+				version = #version#
+			</isNotEmpty>
+			</dynamic>
+		</select>
+		
+		<select id="selectFeedbacksByPage" parameterClass="java.util.HashMap" resultClass="Feedbacks">
+    	select * from feedback
+    	<isNotEmpty property="sortName">
+	    			order by $sortName$ $order$
+	    		</isNotEmpty>
+    	<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+  		
+  		<insert id="insertFeedbacks">
+			insert into feedback (user_name, content,version) 
+ 			    values (#user_name#,#content#,#version#)  
+		    <selectKey resultClass="int" keyProperty="id">  
+  				SELECT LAST_INSERT_ID() AS VALUE  
+			</selectKey>
+		</insert>
+		
+		<delete id="deleteFeedbacks" parameterClass="Feedbacks"> 
+			delete from feedback
+			<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="content">
+				content = #content#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="version">
+				version = #version#
+			</isNotEmpty>
+			</dynamic>
+		</delete>
+		
+		<update id="updateFeedbacks" parameterClass="Feedbacks">
+			update feedback
+		<dynamic prepend="set">  
+			<isNotEmpty prepend="and" property="user_name">
+				user_name = #user_name#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="content">
+               content=#content#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="version">
+               version=#version#  
+			</isNotEmpty>
+        </dynamic>
+        <dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+		</dynamic>			
+		</update>
+		
+	</sqlMap>

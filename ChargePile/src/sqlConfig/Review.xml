@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	<sqlMap>
+		<typeAlias alias="Review" type="com.ChargePoint.bean.Review"/>
+		<!-- 查询所有数据的方法 -->
+		<select id="selectReviewList" resultClass="Review" parameterClass="Review">
+			select * from review
+			<dynamic prepend="where">
+			<isNotNull prepend="and" property="review_user_name">
+               review_user_name=#review_user_name#  
+			</isNotNull>
+			<isNotNull prepend="and" property="content">
+				content = #content#
+			</isNotNull>
+			<isNotNull prepend="and" property="score">
+               score = #score# 
+			</isNotNull>
+			<isNotEmpty prepend="and" property="time">
+               time=#time#  
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="head_portrait">
+               head_portrait=#head_portrait#  
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="station_id">
+               station_id=#station_id#  
+			</isNotEmpty>
+			</dynamic>
+		</select>
+		
+		<select id="selectReviewAvgScoreByStationID" resultClass="float" parameterClass="java.lang.Integer">
+			select avg(score) from review where station_id=#stationID#  
+		</select>
+		
+		<!-- 自动缓存每条查询语句的列名映射,加一个属性(remapResults)配置让每次执行都重新映射列名。 -->
+		<select remapResults="true" id="selectReviewByPage" parameterClass="java.util.HashMap" resultClass="Review">
+    	select * from review where station_id = #stationID#
+    	<isParameterPresent>
+      		<isNotNull property="limitStart">
+        		limit $limitStart$, $limitCount$
+      		</isNotNull>
+    	</isParameterPresent>
+  		</select>
+		
+		<insert id="insertReview" parameterClass="Review">
+			insert into review (station_id,review_user_name ,time, head_portrait ,content ,score) 
+ 			    values (#station_id#,#review_user_name#,#time#,#head_portrait#,#content#,#score#)  
+		<!--  注意：上述SQL语句中不插入主键id-->  
+		<selectKey resultClass="int" keyProperty="id">  
+  			SELECT LAST_INSERT_ID() AS VALUE  
+		</selectKey>
+		</insert>
+		
+		<delete id="deleteReview" parameterClass="Review"> 
+			delete from review
+			<dynamic prepend="where">
+			<isNotNull prepend="and" property="station_id">
+				station_id = #station_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="review_user_name">
+               review_user_name=#review_user_name#  
+			</isNotNull>
+			<isNotNull prepend="and" property="content">
+				content = #content#
+			</isNotNull>
+			<isNotNull prepend="and" property="score">
+               score = #score# 
+			</isNotNull>
+			<isNotEmpty prepend="and" property="time">
+               time=#time#  
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="head_portrait">
+               head_portrait=#head_portrait#  
+			</isNotEmpty>
+			</dynamic>
+		</delete>
+		
+		<update id="updateReview" parameterClass="Review">
+			update review
+		<dynamic prepend="set"> 
+			<isNotNull prepend="," property="station_id">
+				station_id = #station_id#
+			</isNotNull>
+			<isNotNull prepend="," property="review_user_name">
+               review_user_name=#review_user_name#  
+			</isNotNull>
+			<isNotNull prepend="," property="content">
+				content = #content#
+			</isNotNull>
+			<isNotNull prepend="," property="score">
+               score = #score# 
+			</isNotNull>
+			<isNotEmpty prepend="," property="time">
+               time=#time#  
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="head_portrait">
+               head_portrait=#head_portrait#  
+			</isNotEmpty>
+          </dynamic>
+		 	where id = #id#
+		</update>
+		
+	</sqlMap>

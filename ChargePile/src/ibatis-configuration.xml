@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig     
+
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"     
+
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+    <!-- 使用spring之后，数据源的配置移植到了spring上，所以iBATIS本身的配置可以取消 -->
+	<!-- **.xml文件须写好 -->
+    <sqlMap resource="sqlConfig/PCUser.xml"/>
+    
+    <sqlMap resource="sqlConfig/ChargeRecords.xml"/>
+    
+    <sqlMap resource="sqlConfig/ChargePoint.xml"/>
+    
+    <sqlMap resource="sqlConfig/ChargePointStation.xml"/>
+    
+    <sqlMap resource="sqlConfig/ChargePointLive.xml"/>
+    
+    <sqlMap resource="sqlConfig/ChargeMoneyRecords.xml"/>
+    
+    <sqlMap resource="sqlConfig/Common.xml"/>
+    
+    <sqlMap resource="sqlConfig/Sale.xml"/>
+
+	<sqlMap resource="sqlConfig/MobileUser.xml"/>
+	
+	<sqlMap resource="sqlConfig/Company.xml"/>
+	
+	<sqlMap resource="sqlConfig/Operate.xml"/>
+
+	<sqlMap resource="sqlConfig/OperateResults.xml"/>
+	
+	<sqlMap resource="sqlConfig/TradeRecords.xml"/>
+	
+	<sqlMap resource="sqlConfig/Feedbacks.xml"/>
+	
+	<sqlMap resource="sqlConfig/Versions.xml"/>
+	
+	<sqlMap resource="sqlConfig/TempAppointment.xml"/>
+	
+	<sqlMap resource="sqlConfig/TempCharge.xml"/>
+	
+	<sqlMap resource="sqlConfig/DataExchange.xml"/>
+
+	<sqlMap resource="sqlConfig/Review.xml"/>
+
+	<sqlMap resource="sqlConfig/AddHeart.xml"/>
+
+	<sqlMap resource="sqlConfig/WriteBack.xml"/>
+	
+</sqlMapConfig>
