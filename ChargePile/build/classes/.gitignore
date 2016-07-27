@@ -1,1 +1,7 @@
 /com
+/ibatis-configuration.xml
+/jdbc.properties
+/log4j.properties
+/spring-ibatis-config.xml
+/sqlConfig
+/wx-configuration.properties
